@@ -1,0 +1,633 @@
+/*
+ * TASKFLOW GLOBAL STYLESHEET
+ * ============================
+ * This file contains:
+ * 1. Google Font imports
+ * 2. CSS Custom Properties (Design Tokens) - single source of truth for all colors/sizes
+ * 3. Dark mode overrides using [data-theme='dark'] attribute
+ * 4. Global reset and base styles
+ * 5. Reusable utility classes (cards, badges, animations)
+ * 6. Angular Material component overrides
+ * 7. Kanban board styles
+ *
+ * KEY CONCEPT: CSS Custom Properties (variables) allow us to implement
+ * dark/light theming by simply swapping one attribute on <html> or <body>.
+ * All components reference these variables, so the entire theme changes at once.
+ */
+
+/* -----------------------------------------------------------------------
+   1. FONT IMPORTS
+   Using @import to load Google Fonts and Material Icons at the CSS level.
+   Inter is a modern, highly legible sans-serif optimized for screens.
+----------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* -----------------------------------------------------------------------
+   2. CSS CUSTOM PROPERTIES (Design Tokens)
+   Defined on :root so they cascade down to ALL elements.
+   This is the light mode (default) theme.
+----------------------------------------------------------------------- */
+:root {
+  /* --- Primary Brand Colors --- */
+  --primary: #3b82f6;          /* Blue-500 - main action color */
+  --primary-dark: #1d4ed8;     /* Blue-700 - hover/pressed state */
+  --primary-light: #93c5fd;    /* Blue-300 - soft highlights */
+  --primary-50: #eff6ff;       /* Blue-50  - very light backgrounds */
+
+  /* --- Background Colors --- */
+  --bg-primary: #f8fafc;       /* Page background (slate-50) */
+  --bg-secondary: #ffffff;     /* Card/panel backgrounds */
+  --bg-card: #ffffff;          /* Elevated card backgrounds */
+  --bg-hover: #f1f5f9;         /* Hover state backgrounds */
+
+  /* --- Sidebar Colors --- */
+  --sidebar-bg: #1e293b;       /* Slate-800 - dark sidebar */
+  --sidebar-text: #cbd5e1;     /* Slate-300 - sidebar text */
+  --sidebar-active: #3b82f6;   /* Blue - active nav item */
+  --sidebar-hover: #334155;    /* Slate-700 - sidebar hover */
+
+  /* --- Text Colors --- */
+  --text-primary: #1e293b;     /* Slate-800 - main text */
+  --text-secondary: #64748b;   /* Slate-500 - secondary/muted text */
+  --text-muted: #94a3b8;       /* Slate-400 - very muted text */
+  --text-on-primary: #ffffff;  /* Text on primary color backgrounds */
+
+  /* --- Semantic Status Colors --- */
+  --success: #10b981;          /* Emerald-500 */
+  --success-light: #d1fae5;    /* Emerald-100 */
+  --warning: #f59e0b;          /* Amber-500 */
+  --warning-light: #fef3c7;    /* Amber-100 */
+  --danger: #ef4444;           /* Red-500 */
+  --danger-light: #fee2e2;     /* Red-100 */
+  --info: #3b82f6;             /* Blue-500 */
+  --info-light: #dbeafe;       /* Blue-100 */
+
+  /* --- Task Priority Colors --- */
+  --priority-low: #10b981;     /* Green for low priority */
+  --priority-medium: #f59e0b;  /* Amber for medium priority */
+  --priority-high: #ef4444;    /* Red for high priority */
+
+  /* --- Borders --- */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+
+  /* --- Box Shadows --- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* --- Border Radius --- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- Layout Dimensions --- */
+  --sidebar-width: 260px;      /* Fixed sidebar width */
+  --navbar-height: 64px;       /* Top navbar height */
+  --content-max-width: 1400px; /* Max width for page content */
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* -----------------------------------------------------------------------
+   3. DARK MODE OVERRIDES
+   When JavaScript sets data-theme="dark" on the <html> element,
+   these variables override the :root defaults. All components
+   automatically pick up the new colors because they use var(--variable).
+----------------------------------------------------------------------- */
+[data-theme='dark'] {
+  /* Backgrounds become dark shades of slate */
+  --bg-primary: #0f172a;       /* Slate-900 */
+  --bg-secondary: #1e293b;     /* Slate-800 */
+  --bg-card: #1e293b;          /* Slate-800 */
+  --bg-hover: #334155;         /* Slate-700 */
+
+  /* Text becomes light */
+  --text-primary: #f1f5f9;     /* Slate-100 */
+  --text-secondary: #94a3b8;   /* Slate-400 */
+  --text-muted: #64748b;       /* Slate-500 */
+
+  /* Sidebar gets even darker */
+  --sidebar-bg: #0f172a;       /* Slate-900 */
+  --sidebar-hover: #1e293b;    /* Slate-800 */
+
+  /* Borders become lighter for dark mode visibility */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+
+  /* Shadows adjusted for dark backgrounds */
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* -----------------------------------------------------------------------
+   4. GLOBAL RESET & BASE STYLES
+   box-sizing: border-box makes width/height include padding and border,
+   which is much more intuitive for layout calculations.
+----------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px; /* 1rem = 16px - base for relative units */
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  /* Smooth transitions when switching between light and dark modes */
+  transition: background-color var(--transition), color var(--transition);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased; /* Crisp text on macOS/iOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default list styling for cleaner navigation */
+ul, ol {
+  list-style: none;
+}
+
+/* Make images responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Remove default anchor styling - we apply our own */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* -----------------------------------------------------------------------
+   5. CUSTOM SCROLLBAR STYLES
+   Webkit-based browsers (Chrome, Edge, Safari) support custom scrollbars.
+   Firefox uses scrollbar-width and scrollbar-color properties.
+----------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* -----------------------------------------------------------------------
+   6. CARD UTILITY CLASSES
+   Reusable card styles used across the application.
+   These are utility classes that can be applied to any element.
+----------------------------------------------------------------------- */
+.tf-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  border: 1px solid var(--border);
+  /* Smooth hover effect for interactive cards */
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.tf-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Stats card - wider layout with icon + numbers */
+.stats-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+  cursor: default;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Circular icon container inside a stats card */
+.stats-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0; /* Don't shrink when space is tight */
+}
+
+.stats-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stats-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* -----------------------------------------------------------------------
+   7. BADGE UTILITY CLASSES
+   Pill-shaped badges for priority and status indicators.
+   Using separate bg/text colors for accessibility (not just color-coding).
+----------------------------------------------------------------------- */
+
+/* Priority Badges */
+.badge-low {
+  display: inline-flex;
+  align-items: center;
+  background: #d1fae5; /* Emerald-100 */
+  color: #065f46;       /* Emerald-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.badge-medium {
+  display: inline-flex;
+  align-items: center;
+  background: #fef3c7; /* Amber-100 */
+  color: #92400e;       /* Amber-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.badge-high {
+  display: inline-flex;
+  align-items: center;
+  background: #fee2e2; /* Red-100 */
+  color: #991b1b;       /* Red-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Status Badges */
+.badge-pending {
+  display: inline-flex;
+  align-items: center;
+  background: #e0e7ff; /* Indigo-100 */
+  color: #3730a3;       /* Indigo-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-in-progress {
+  display: inline-flex;
+  align-items: center;
+  background: #fef3c7; /* Amber-100 */
+  color: #92400e;       /* Amber-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-completed {
+  display: inline-flex;
+  align-items: center;
+  background: #d1fae5; /* Emerald-100 */
+  color: #065f46;       /* Emerald-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-active {
+  display: inline-flex;
+  align-items: center;
+  background: #dbeafe; /* Blue-100 */
+  color: #1e3a8a;       /* Blue-900 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-on-hold {
+  display: inline-flex;
+  align-items: center;
+  background: #f3f4f6; /* Gray-100 */
+  color: #374151;       /* Gray-700 */
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------------------
+   8. ANIMATIONS
+   CSS keyframe animations for smooth page/component transitions.
+   fadeIn is used on page load; slideIn for sidebars/drawers.
+----------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Apply the fadeIn animation class */
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease forwards;
+}
+
+/* Staggered animation delays for list items */
+.fade-in:nth-child(1) { animation-delay: 0.05s; }
+.fade-in:nth-child(2) { animation-delay: 0.10s; }
+.fade-in:nth-child(3) { animation-delay: 0.15s; }
+.fade-in:nth-child(4) { animation-delay: 0.20s; }
+.fade-in:nth-child(5) { animation-delay: 0.25s; }
+.fade-in:nth-child(6) { animation-delay: 0.30s; }
+
+/* -----------------------------------------------------------------------
+   9. PAGE HEADER STYLES
+   Consistent heading area at top of each page/section.
+----------------------------------------------------------------------- */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+/* -----------------------------------------------------------------------
+   10. ANGULAR MATERIAL OVERRIDES
+   Customize Material component styles to match our design system.
+   Using high-specificity selectors to override Material's defaults.
+----------------------------------------------------------------------- */
+
+/* Make dialog containers use our border radius */
+.mat-mdc-dialog-container {
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden !important;
+}
+
+/* Full-width form fields (set on the mat-form-field element) */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Snackbar positioning and style */
+.mat-mdc-snack-bar-container {
+  border-radius: var(--radius-sm) !important;
+}
+
+/* Green success snackbar */
+.snack-success {
+  --mdc-snackbar-container-color: #10b981 !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+}
+
+/* Red error snackbar */
+.snack-error {
+  --mdc-snackbar-container-color: #ef4444 !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+}
+
+/* Blue info snackbar */
+.snack-info {
+  --mdc-snackbar-container-color: #3b82f6 !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------
+   11. LOADING OVERLAY
+   Full-screen overlay shown when global HTTP requests are in flight.
+   backdrop-filter: blur creates a frosted-glass effect.
+----------------------------------------------------------------------- */
+.loading-overlay {
+  position: fixed;
+  inset: 0; /* Shorthand for top:0 right:0 bottom:0 left:0 */
+  background: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Above everything else */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+[data-theme='dark'] .loading-overlay {
+  background: rgba(15, 23, 42, 0.75);
+}
+
+/* -----------------------------------------------------------------------
+   12. KANBAN BOARD STYLES
+   Used by the KanbanComponent with Angular CDK DragDrop.
+   CDK DragDrop adds classes like .cdk-drag-placeholder and .cdk-drag-animating.
+----------------------------------------------------------------------- */
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  min-height: 500px;
+  align-items: flex-start;
+}
+
+.kanban-col {
+  flex: 0 0 300px; /* Fixed width columns, no shrinking */
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+  min-height: 400px;
+}
+
+.kanban-col-header {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.kanban-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-xs);
+  cursor: grab;
+  border: 1px solid var(--border);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.kanban-card:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+}
+
+/* CDK DragDrop: placeholder element shown in the original position while dragging */
+.cdk-drag-placeholder {
+  opacity: 0;
+  border: 2px dashed var(--primary);
+  background: var(--primary-50);
+  border-radius: var(--radius-sm);
+  height: 70px;
+}
+
+/* CDK DragDrop: smooth animation when items snap into position after drop */
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* CDK DragDrop: animate list reordering when an item is being dragged */
+.kanban-col.cdk-drop-list-dragging .kanban-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* The element being actively dragged - elevated appearance */
+.cdk-drag-preview {
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-strong);
+}
+
+/* -----------------------------------------------------------------------
+   13. LAYOUT UTILITY CLASSES
+----------------------------------------------------------------------- */
+
+/* Flex helpers */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+
+/* Text helpers */
+.text-sm { font-size: 0.875rem; }
+.text-muted { color: var(--text-secondary); }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Spacing helpers */
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.p-4 { padding: 16px; }
+
+/* Overdue task highlight in tables */
+.overdue-row {
+  background-color: #fff5f5 !important;
+}
+
+[data-theme='dark'] .overdue-row {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Auth page gradient background */
+.auth-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
